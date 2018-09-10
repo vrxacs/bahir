@@ -66,7 +66,7 @@ object TwitterAlgebirdCMS {
     // K highest frequency elements to take
     val TOPK = 10
 
-    val filters = args
+    val filters: Map[String, Seq[String]] = Map("track" -> args)
     val sparkConf = new SparkConf().setAppName("TwitterAlgebirdCMS")
 
     // check Spark configuration for master URL, set it to local if not configured

@@ -41,7 +41,7 @@ private[streaming]
 class TwitterInputDStream(
     _ssc: StreamingContext,
     twitterAuth: Option[Authorization],
-    filters: Seq[String],
+    filters: Map[String, Seq[String]],
     storageLevel: StorageLevel
   ) extends ReceiverInputDStream[Status](_ssc)  {
 
@@ -59,7 +59,7 @@ class TwitterInputDStream(
 private[streaming]
 class TwitterReceiver(
     twitterAuth: Authorization,
-    filters: Seq[String],
+    filters: Map[String, Seq[String]],
     storageLevel: StorageLevel
   ) extends Receiver[Status](storageLevel) with Logging {
 
@@ -87,7 +87,16 @@ class TwitterReceiver(
 
       val query = new FilterQuery
       if (filters.size > 0) {
-        query.track(filters.mkString(","))
+        if (filters.contains("track")) {
+          query.track(filters("track").mkString(","))
+        }
+        if (filters.contains("locations") && filters("locations").size == 4) {
+          val loc = filters("locations").map(_.toDouble).toArray
+          query.locations(Array(loc(0), loc(1)), Array(loc(2), loc(3)))
+        }
+        if (filters.contains("language")) {
+          query.language(filters("language").mkString(","))
+        }
         newTwitterStream.filter(query)
       } else {
         newTwitterStream.sample()

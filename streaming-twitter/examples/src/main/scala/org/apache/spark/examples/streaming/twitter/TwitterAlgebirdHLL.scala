@@ -54,7 +54,7 @@ object TwitterAlgebirdHLL {
 
     /** Bit size parameter for HyperLogLog, trades off accuracy vs size */
     val BIT_SIZE = 12
-    val filters = args
+    val filters: Map[String, Seq[String]] = Map("track" -> args)
     val sparkConf = new SparkConf().setAppName("TwitterAlgebirdHLL")
 
     // check Spark configuration for master URL, set it to local if not configured

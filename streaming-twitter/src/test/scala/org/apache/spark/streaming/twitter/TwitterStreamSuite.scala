@@ -37,7 +37,7 @@ class TwitterStreamSuite extends SparkFunSuite with BeforeAndAfter with Logging 
 
   test("twitter input stream") {
     val ssc = new StreamingContext(master, framework, batchDuration)
-    val filters = Seq("filter1", "filter2")
+    val filters = Map("track" -> Seq("filter1", "filter2"))
     val authorization: Authorization = NullAuthorization.getInstance()
 
     // tests the API, does not actually test data receiving

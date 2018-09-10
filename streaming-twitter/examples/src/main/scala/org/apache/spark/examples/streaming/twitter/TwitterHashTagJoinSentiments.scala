@@ -42,7 +42,7 @@ object TwitterHashTagJoinSentiments {
     }
 
     val Array(consumerKey, consumerSecret, accessToken, accessTokenSecret) = args.take(4)
-    val filters = args.takeRight(args.length - 4)
+    val filters: Map[String, Seq[String]] = Map("track" -> args.takeRight(args.length - 4))
 
     // Set the system properties so that Twitter4j library used by Twitter stream
     // can use them to generate OAuth credentials
